@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
 import { useToken } from "../contexts/tokenContext";
-import AnotherUserPreview from "./AnotherUserPreview";
+import { useEffect, useState } from "react";
+import { useAuth } from "../contexts/authContext";
+import AnotherUserPreview from "../components/AnotherUserPreview";
+import HomeSuggestedProfiles from "../components/HomeSuggestedProfiles";
 
-function MoreProfiles({ currentID, howMany }) {
-  console.log('more profiles currentID', currentID);
+function SuggestedProfiles() {
   const allProfilesEP = "https://striveschool-api.herokuapp.com/api/profile/";
   const { token } = useToken();
+  const { myId } = useAuth();
+  console.log("myId in Suggested profiles", myId);
 
   const [users, setUsers] = useState([]);
 
@@ -19,18 +23,14 @@ function MoreProfiles({ currentID, howMany }) {
       const profiles = await res.json();
 
       // console.log('profiles', profiles)
-      let filtered = [];
-      if (currentID == '')
-        filtered = profiles.filter((profile) => profile._id !== currentID);
-      else 
-        filtered = profiles; 
+      let filtered = profiles.filter((profile) => profile._id !== myId);
 
       const randomUsers = [];
       const usedIdxs = new Set();
 
       // console.log('filtered length', filtered.length)
 
-      while (randomUsers.length < howMany) {
+      while (randomUsers.length < 21) {
         const randIdx = Math.floor(Math.random() * filtered.length);
         if (!usedIdxs.has(randIdx)) {
           usedIdxs.add(randIdx);
@@ -46,17 +46,19 @@ function MoreProfiles({ currentID, howMany }) {
 
   useEffect(() => {
     fetchProfiles();
-  }, [currentID]);
-
-  console.log("users", users);
+  }, [myId]);
 
   return (
-    <div className="mt-4 rounded-3 bg-white border p-4">
-      <h3 className="fs-5 mb-3">More profiles for you</h3>
-      {users.map((user) => (
-        <AnotherUserPreview profile={user} key={user._id} />
-      ))}
-    </div>
+    <Container className="rounded-5 bg-white p-4">
+      <h2>More profiles for you</h2>
+      <Row className="mt-4">
+        {users.map((user) => (
+          <Col sm={4}  key={user._id}>
+            <HomeSuggestedProfiles profile={user} />
+          </Col>
+        ))}
+      </Row>
+    </Container>
   );
 }
-export default MoreProfiles;
+export default SuggestedProfiles;

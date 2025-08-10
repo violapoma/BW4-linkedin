@@ -62,7 +62,7 @@ function Profile() {
           <Experiences userID={userID} />
         </Col>
         <Col lg={3}>
-          <MoreProfiles currentID={userID}/>
+          <MoreProfiles currentID={userID} howMany={6}/>
         </Col>
       </Row>
     </Container>

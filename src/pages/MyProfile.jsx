@@ -10,8 +10,6 @@ import axios from "../data/axios";
 function MyProfile() {
   const myEP = "https://striveschool-api.herokuapp.com/api/profile/me";
   const { token } = useToken();
-  console.log('my profile, token', token)
-  console.log('my profile meta token', import.meta.env.VITE_TOKEN);
 
   const [me, setMe] = useState({});
 
@@ -65,7 +63,7 @@ function MyProfile() {
           <Experiences userID={me._id} edit='on'/>
         </Col>
         <Col lg={3}>
-          <MoreProfiles currentID='' />
+          <MoreProfiles currentID='' howMany={6}/>
         </Col>
       </Row>
 

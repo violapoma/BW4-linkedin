@@ -7,8 +7,17 @@ import {
   Navbar,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/authContext";
 
 function Header() {
+  const { isLoggedIn, logout } = useAuth();
+
+  const handleLogout = () => {
+    if (isLoggedIn) {
+      logout();
+      console.log('isloggedin after logout', isLoggedIn)
+    }
+  };
   return (
     <div className="border-bottom border-secodnary">
       <Navbar className="bg-white py-0 align-items-between">
@@ -85,16 +94,14 @@ function Header() {
                     <NavDropdown.Item to="/profile/myprofile" as={Link}>
                       View Profile
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">
-                      Another action
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">
-                      Something
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/3.4">
-                      Separated link
-                    </NavDropdown.Item>
+                    {isLoggedIn && (
+                      <>
+                        <NavDropdown.Divider />
+                        <NavDropdown.Item to="/" as={Link} onClick={handleLogout}>
+                          Logout
+                        </NavDropdown.Item>
+                      </>
+                    )}
                   </NavDropdown>
                 </div>
               </Nav>

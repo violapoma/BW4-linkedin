@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 
 function ExperienceFormModal({ show, handleClose, onSubmit, initialData }) {
@@ -36,6 +36,7 @@ function ExperienceFormModal({ show, handleClose, onSubmit, initialData }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const form = e.currentTarget;
 
     if (form.checkValidity() === false) {
